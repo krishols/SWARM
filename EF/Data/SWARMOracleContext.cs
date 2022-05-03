@@ -41,7 +41,7 @@ namespace SWARM.EF.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("C##LAB6")
+            modelBuilder.HasDefaultSchema("C##_UD_KRIS")
                 .HasAnnotation("Relational:Collation", "USING_NLS_COMP");
 
             modelBuilder.Entity<AspNetRoleClaim>(entity =>

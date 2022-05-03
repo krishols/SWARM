@@ -9,8 +9,6 @@ using Microsoft.EntityFrameworkCore;
 namespace SWARM.EF.Models
 {
     [Table("COURSE")]
-    [Index(nameof(Prerequisite), Name = "CRSE_CRSE_FK_I")]
-    [Index(nameof(CourseNo), Name = "CRSE_PK", IsUnique = true)]
     public partial class Course
     {
         public Course()
@@ -22,6 +20,9 @@ namespace SWARM.EF.Models
         [Key]
         [Column("COURSE_NO")]
         public int CourseNo { get; set; }
+        [Key]
+        [Column("SCHOOL_ID")]
+        public int SchoolId { get; set; }
         [Required]
         [Column("DESCRIPTION")]
         [StringLength(50)]
@@ -42,9 +43,6 @@ namespace SWARM.EF.Models
         public string ModifiedBy { get; set; }
         [Column("MODIFIED_DATE", TypeName = "DATE")]
         public DateTime ModifiedDate { get; set; }
-        [Key]
-        [Column("SCHOOL_ID")]
-        public int SchoolId { get; set; }
         [Column("PREREQUISITE_SCHOOL_ID")]
         public int? PrerequisiteSchoolId { get; set; }
 

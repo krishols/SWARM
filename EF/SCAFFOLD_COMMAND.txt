@@ -1,1 +1,1 @@
-﻿Scaffold-DbContext "Data Source=DEV;User ID=C##LAB6;Proxy user id= /"Oracle.EntityFrameworkCore -OutputDir Models -ContextDir Data -Project "SWARM.EF"  -Context "SWARMOracleContext" -DataAnnotations -NoOnConfiguring -Force
+﻿Scaffold-DbContext "Data Source=DEV;User ID=C##_UD_KRIS;Proxy user id= /"Oracle.EntityFrameworkCore -OutputDir Models -ContextDir Data -Project "SWARM.EF"  -Context "SWARMOracleContext" -DataAnnotations -NoOnConfiguring -Force
