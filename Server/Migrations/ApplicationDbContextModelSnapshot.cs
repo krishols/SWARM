@@ -15,7 +15,7 @@ namespace SWARM.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("C##_UD_KRIS")
+                .HasDefaultSchema("C##_63710_GROUP10")
                 .HasAnnotation("Relational:Collation", "USING_NLS_COMP")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.15")

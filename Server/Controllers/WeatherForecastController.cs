@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SWARM.Server.Data;
 using SWARM.Shared;
 
 namespace SWARM.Server.Controllers
@@ -20,9 +22,11 @@ namespace SWARM.Server.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ApplicationDbContext context, ILogger <WeatherForecastController> logger)
         {
+            _context = context;
             _logger = logger;
         }
 
@@ -37,6 +41,13 @@ namespace SWARM.Server.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+
         }
+        public async Task<IActionResult> testQuery()
+            {
+                var MyList = await _context.Users.Where(x => x.Email == "Test@test.com").ToListAsync();
+                return Ok(MyList);
+            }
     }
 }
+    

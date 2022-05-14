@@ -40,6 +40,7 @@ namespace SWARM.UT.UT
             _context = new SWARMOracleContext(_optionsBuilder.Options);
         }
 
+        /*
         [TestMethod]
         public void UpdateCost()
         {
@@ -52,6 +53,6 @@ namespace SWARM.UT.UT
             _context.SaveChanges();
             Assert.IsTrue(1 == 1);
         }
-
+        */
     }
 }

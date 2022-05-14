@@ -11,47 +11,25 @@ namespace SWARM.EF.Models
     [Table("ENROLLMENT")]
     public partial class Enrollment
     {
-        public Enrollment()
-        {
-            Grades = new HashSet<Grade>();
-        }
-
         [Key]
-        [Column("STUDENT_ID")]
-        public int StudentId { get; set; }
-        [Key]
-        [Column("SECTION_ID")]
-        public int SectionId { get; set; }
-        [Key]
-        [Column("SCHOOL_ID")]
-        public int SchoolId { get; set; }
-        [Column("ENROLL_DATE", TypeName = "DATE")]
-        public DateTime EnrollDate { get; set; }
-        [Column("FINAL_GRADE")]
-        public byte? FinalGrade { get; set; }
+        [Column("GUID_ID")]
+        [StringLength(32)]
+        public string GuidId { get; set; }
         [Required]
-        [Column("CREATED_BY")]
-        [StringLength(30)]
-        public string CreatedBy { get; set; }
-        [Column("CREATED_DATE", TypeName = "DATE")]
-        public DateTime CreatedDate { get; set; }
+        [Column("FIRST_NAME")]
+        [StringLength(20)]
+        public string FirstName { get; set; }
         [Required]
-        [Column("MODIFIED_BY")]
-        [StringLength(30)]
-        public string ModifiedBy { get; set; }
-        [Column("MODIFIED_DATE", TypeName = "DATE")]
-        public DateTime ModifiedDate { get; set; }
+        [Column("LAST_NAME")]
+        [StringLength(20)]
+        public string LastName { get; set; }
+        [Required]
+        [Column("SECTION_GUID_ID")]
+        [StringLength(32)]
+        public string SectionGuidId { get; set; }
 
-        [ForeignKey("SectionId,SchoolId")]
+        [ForeignKey(nameof(SectionGuidId))]
         [InverseProperty(nameof(Section.Enrollments))]
-        public virtual Section S { get; set; }
-        [ForeignKey("StudentId,SchoolId")]
-        [InverseProperty(nameof(Student.Enrollments))]
-        public virtual Student SNavigation { get; set; }
-        [ForeignKey(nameof(SchoolId))]
-        [InverseProperty("Enrollments")]
-        public virtual School School { get; set; }
-        [InverseProperty(nameof(Grade.S))]
-        public virtual ICollection<Grade> Grades { get; set; }
+        public virtual Section SectionGuid { get; set; }
     }
 }

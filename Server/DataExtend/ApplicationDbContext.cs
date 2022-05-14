@@ -15,7 +15,7 @@ namespace SWARM.Server.Data
         {
             base.OnModelCreating(builder);
 
-            builder.HasDefaultSchema("C##_UD_KRIS")
+            builder.HasDefaultSchema("C##_63710_GROUP10")
                 .HasAnnotation("Relational:Collation", "USING_NLS_COMP");
 
             builder.ToUpperCaseTables();
