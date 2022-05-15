@@ -31,4 +31,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Controllers\Course\" />
+    <None Remove="Controllers\Section\" />
+    <None Remove="Controllers\School\" />
+    <None Remove="Controllers\Enrollment\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\Course\" />
+    <Folder Include="Controllers\Section\" />
+    <Folder Include="Controllers\School\" />
+    <Folder Include="Controllers\Enrollment\" />
+  </ItemGroup>
 </Project>
