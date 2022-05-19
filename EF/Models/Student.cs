@@ -8,24 +8,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SWARM.EF.Models
 {
-    [Table("SECTION")]
-    public partial class Section
+    [Table("STUDENT")]
+    [Index(nameof(StudentId), Name = "STUDENTS_UK1", IsUnique = true)]
+    public partial class Student
     {
-        public Section()
+        public Student()
         {
             Enrollments = new HashSet<Enrollment>();
         }
 
-        [Column("SECTION_NO")]
-        public int SectionNo { get; set; }
         [Key]
         [Column("GUID_ID")]
         [StringLength(32)]
         public string GuidId { get; set; }
-        [Required]
-        [Column("COURSE_GUID_ID")]
-        [StringLength(32)]
-        public string CourseGuidId { get; set; }
+        [Column("STUDENT_ID")]
+        public int StudentId { get; set; }
+        [Column("FIRST_NAME")]
+        [StringLength(20)]
+        public string FirstName { get; set; }
+        [Column("LAST_NAME")]
+        [StringLength(20)]
+        public string LastName { get; set; }
         [Required]
         [Column("CREATED_BY")]
         [StringLength(30)]
@@ -39,10 +42,7 @@ namespace SWARM.EF.Models
         [Column("MODIFIED_DATE", TypeName = "DATE")]
         public DateTime ModifiedDate { get; set; }
 
-        [ForeignKey(nameof(CourseGuidId))]
-        [InverseProperty(nameof(Course.Sections))]
-        public virtual Course CourseGuid { get; set; }
-        [InverseProperty(nameof(Enrollment.SectionGuid))]
+        [InverseProperty(nameof(Enrollment.StudentGuid))]
         public virtual ICollection<Enrollment> Enrollments { get; set; }
     }
 }

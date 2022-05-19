@@ -49,7 +49,7 @@ namespace SWARM.Server.Controllers.Enroll
         [Route("Get")]
         public async Task<IActionResult> Get()
         {
-            List<Enrollment> lstCourses = await _context.Enrollments.OrderBy(x => x.LastName).ToListAsync();
+            List<Enrollment> lstCourses = await _context.Enrollments.OrderBy(x => x.GuidId).ToListAsync();
             return Ok(lstCourses);
         }
 
@@ -77,13 +77,11 @@ namespace SWARM.Server.Controllers.Enroll
 
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.LastName = _Item.LastName;
-                existCourse.FirstName = _Item.FirstName;
                 existCourse.SectionGuidId = _Item.SectionGuidId;
                 _context.Enrollments.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
-                return Ok(_Item.LastName);
+                return Ok(_Item.GuidId);
 
             }
             catch (Exception e)
@@ -107,13 +105,11 @@ namespace SWARM.Server.Controllers.Enroll
                 }
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.LastName = _Item.LastName;
-                existCourse.FirstName = _Item.FirstName;
                 existCourse.SectionGuidId = _Item.SectionGuidId;
                 _context.Enrollments.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
-                return Ok(_Item.LastName);
+                return Ok(_Item.GuidId);
             }
             catch (Exception e)
             {

@@ -25,7 +25,7 @@ namespace SWARM.Client.Pages.Course
 
         public List<int?> PageSizes => true ? new List<int?> { 10, 25, 50, null } : null;
         private int PageSize = 10;
-        private int PageIndex { get; set; } = 2;
+        private int PageIndex { get; set; } = 0;
         private async Task PageChangedHandler(int currPage)
         {
             PageIndex = currPage;

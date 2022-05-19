@@ -28,9 +28,11 @@ namespace SWARM.EF.Data
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
         public virtual DbSet<Enrollment> Enrollments { get; set; }
+        public virtual DbSet<Grade> Grades { get; set; }
         public virtual DbSet<PersistedGrant> PersistedGrants { get; set; }
         public virtual DbSet<School> Schools { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +92,18 @@ namespace SWARM.EF.Data
 
                 entity.Property(e => e.CourseNo).HasPrecision(8);
 
+                entity.Property(e => e.CreatedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
+
                 entity.Property(e => e.PrereqGuidId).IsUnicode(false);
 
                 entity.Property(e => e.SchoolGuidId).IsUnicode(false);
@@ -122,17 +136,65 @@ namespace SWARM.EF.Data
                     .IsUnicode(false)
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.FirstName).IsUnicode(false);
+                entity.Property(e => e.CreatedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.LastName).IsUnicode(false);
+                entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.SectionGuidId).IsUnicode(false);
+
+                entity.Property(e => e.StudentGuidId).IsUnicode(false);
 
                 entity.HasOne(d => d.SectionGuid)
                     .WithMany(p => p.Enrollments)
                     .HasForeignKey(d => d.SectionGuidId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ENROLLMENT_FK1");
+
+                entity.HasOne(d => d.StudentGuid)
+                    .WithMany(p => p.Enrollments)
+                    .HasForeignKey(d => d.StudentGuidId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ENROLLMENT_FK2");
+            });
+
+            modelBuilder.Entity<Grade>(entity =>
+            {
+                entity.HasKey(e => e.GuidId)
+                    .HasName("GRADES_PK");
+
+                entity.Property(e => e.GuidId)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.EnrollmentGuid).IsUnicode(false);
+
+                entity.Property(e => e.Grade1).HasPrecision(3);
+
+                entity.Property(e => e.ModifiedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.Guid)
+                    .WithOne(p => p.Grade)
+                    .HasForeignKey<Grade>(d => d.GuidId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("GRADES_FK1");
             });
 
             modelBuilder.Entity<PersistedGrant>(entity =>
@@ -153,6 +215,18 @@ namespace SWARM.EF.Data
                     .IsUnicode(false)
                     .ValueGeneratedOnAdd();
 
+                entity.Property(e => e.CreatedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
+
                 entity.Property(e => e.SchoolName).IsUnicode(false);
             });
 
@@ -167,6 +241,18 @@ namespace SWARM.EF.Data
 
                 entity.Property(e => e.CourseGuidId).IsUnicode(false);
 
+                entity.Property(e => e.CreatedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
+
                 entity.Property(e => e.SectionNo).HasPrecision(8);
 
                 entity.HasOne(d => d.CourseGuid)
@@ -174,6 +260,34 @@ namespace SWARM.EF.Data
                     .HasForeignKey(d => d.CourseGuidId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("SECTION_FK1");
+            });
+
+            modelBuilder.Entity<Student>(entity =>
+            {
+                entity.HasKey(e => e.GuidId)
+                    .HasName("STUDENTS_PK");
+
+                entity.Property(e => e.GuidId)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.FirstName).IsUnicode(false);
+
+                entity.Property(e => e.LastName).IsUnicode(false);
+
+                entity.Property(e => e.ModifiedBy)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.StudentId).HasPrecision(8);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -41,6 +41,7 @@ namespace SWARM.Server.Controllers.Crse
             Course itmCourse = await _context.Courses.Where(x => x.GuidId == KeyValue).FirstOrDefaultAsync();
             return Ok(itmCourse);
         }
+
         [Route("Delete/{KeyValue}")]
         public async Task<IActionResult> Delete(string KeyValue)
         {
@@ -149,7 +150,7 @@ namespace SWARM.Server.Controllers.Crse
             DataEnvelope<CourseDTO> dataToReturn = null;
 
             //Original context call didn't seem to be returning data
-            /*
+
             IQueryable<CourseDTO> queriableStates = _context.Courses
                 .Select(sp => new CourseDTO
                 {
@@ -158,10 +159,16 @@ namespace SWARM.Server.Controllers.Crse
                     GuidId = sp.GuidId,
                     PrereqGuidId = sp.PrereqGuidId,
                     SchoolGuidId = sp.SchoolGuidId,
-                    SchoolName = sp.SchoolGuid.SchoolName
+                    SchoolName = sp.SchoolGuid.SchoolName,
+                    CreatedBy = sp.CreatedBy,
+                    CreatedDate = sp.CreatedDate,
+                    ModifiedBy = sp.ModifiedBy,
+                    ModifiedDate = sp.ModifiedDate
                 }) ;
-            */
 
+
+            /*
+            // Michael's workaround code
             //Gets all courses in a list
             List<Course> lstCourses = await _context.Courses.OrderBy(x => x.CourseNo).ToListAsync();
 
@@ -178,8 +185,39 @@ namespace SWARM.Server.Controllers.Crse
                 DTOlst.Add(c1);
 
             }
+            */
 
-
+            // PROF'S ORIG CODE
+            // use the Telerik DataSource Extensions to perform the query on the data
+            // the Telerik extension methods can also work on "regular" collections like List<T> and IQueriable<T>
+            try
+            {
+                DataSourceResult processedData = await queriableStates.ToDataSourceResultAsync(gridRequest);
+                if (gridRequest.Groups.Count > 0)
+                {
+                    // If there is grouping, use the field for grouped data
+                    // The app must be able to serialize and deserialize it
+                    // Example helper methods for this are available in this project
+                    // See the GroupDataHelper.DeserializeGroups and JsonExtensions.Deserialize methods
+                    dataToReturn = new DataEnvelope<CourseDTO>
+                    {
+                        GroupedData = processedData.Data.Cast<AggregateFunctionsGroup>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+                else
+                {
+                    // When there is no grouping, the simplistic approach of 
+                    // just serializing and deserializing the flat data is enough
+                    dataToReturn = new DataEnvelope<CourseDTO>
+                    {
+                        CurrentPageData = processedData.Data.Cast<CourseDTO>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+            }
+            /*
+            // Michael's workaround code
             // use the Telerik DataSource Extensions to perform the query on the data
             // the Telerik extension methods can also work on "regular" collections like List<T> and IQueriable<T>
             try
@@ -210,15 +248,16 @@ namespace SWARM.Server.Controllers.Crse
                         CurrentPageData = DTOlst,
                         TotalItemCount = processedData.Total
                     };
-                    /*
-                    dataToReturn = new DataEnvelope<CourseDTO>
-                    {
-                        CurrentPageData = processedData.Data.Cast<CourseDTO>().ToList(),
-                        TotalItemCount = processedData.Total
-                    };
-                    */
+
+                    //dataToReturn = new DataEnvelope<CourseDTO>
+                    //{
+                    //    CurrentPageData = processedData.Data.Cast<CourseDTO>().ToList(),
+                    //    TotalItemCount = processedData.Total
+                    //};
+
                 }
-            }
+             }
+            */
             catch (Exception e)
             {
                 //fixme add decent exception handling
