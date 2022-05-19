@@ -35,6 +35,18 @@ namespace SWARM.EF.Models
         [Column("SCHOOL_GUID_ID")]
         [StringLength(32)]
         public string SchoolGuidId { get; set; }
+        [Required]
+        [Column("CREATED_BY")]
+        [StringLength(30)]
+        public string CreatedBy { get; set; }
+        [Column("CREATED_DATE", TypeName = "DATE")]
+        public DateTime CreatedDate { get; set; }
+        [Required]
+        [Column("MODIFIED_BY")]
+        [StringLength(30)]
+        public string ModifiedBy { get; set; }
+        [Column("MODIFIED_DATE", TypeName = "DATE")]
+        public DateTime ModifiedDate { get; set; }
 
         [ForeignKey(nameof(PrereqGuidId))]
         [InverseProperty(nameof(Course.InversePrereqGuid))]
