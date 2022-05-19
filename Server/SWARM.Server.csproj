@@ -36,11 +36,15 @@
     <None Remove="Controllers\Section\" />
     <None Remove="Controllers\School\" />
     <None Remove="Controllers\Enrollment\" />
+    <None Remove="Controllers\Student\" />
+    <None Remove="Controllers\Grade\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Course\" />
     <Folder Include="Controllers\Section\" />
     <Folder Include="Controllers\School\" />
     <Folder Include="Controllers\Enrollment\" />
+    <Folder Include="Controllers\Student\" />
+    <Folder Include="Controllers\Grade\" />
   </ItemGroup>
 </Project>

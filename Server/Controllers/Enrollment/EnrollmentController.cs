@@ -20,7 +20,7 @@ namespace SWARM.Server.Controllers.Enroll
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnrollmentController : BaseController, iBaseController<Enrollment>
+    public class EnrollmentController : BaseController, iBaseController<EnrollmentDTO>
     {
         public EnrollmentController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
@@ -62,7 +62,7 @@ namespace SWARM.Server.Controllers.Enroll
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Enrollment _Item)
+        public async Task<IActionResult> Post([FromBody] EnrollmentDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -78,6 +78,11 @@ namespace SWARM.Server.Controllers.Enroll
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SectionGuidId = _Item.SectionGuidId;
+                existCourse.SectionGuidId = _Item.StudetnGuidId;
+                existCourse.CreatedBy = _Item.CreatedBy;
+                existCourse.CreatedDate = _Item.CreatedDate;
+                existCourse.ModifiedBy = _Item.ModifiedBy;
+                existCourse.ModifiedDate = _Item.ModifiedDate;
                 _context.Enrollments.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
@@ -91,7 +96,7 @@ namespace SWARM.Server.Controllers.Enroll
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Enrollment _Item)
+        public async Task<IActionResult> Put([FromBody] EnrollmentDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -106,7 +111,7 @@ namespace SWARM.Server.Controllers.Enroll
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SectionGuidId = _Item.SectionGuidId;
-                _context.Enrollments.Add(existCourse);
+                _context.Enrollments.Update(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
                 return Ok(_Item.GuidId);

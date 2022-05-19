@@ -90,7 +90,7 @@ namespace SWARM.Server.Controllers.Crse
             {
 
                 var existCourse = await _context.Courses.Where(x => x.CourseNo == _Item.CourseNo).FirstOrDefaultAsync();
-
+                
                 if (existCourse != null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Course already exists.");

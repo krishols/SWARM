@@ -21,7 +21,7 @@ namespace SWARM.Server.Controllers.Schl
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SchoolController : BaseController, iBaseController<School>
+    public class SchoolController : BaseController, iBaseController<SchoolDTO>
     {
         public SchoolController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
@@ -64,7 +64,7 @@ namespace SWARM.Server.Controllers.Schl
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] School _Item)
+        public async Task<IActionResult> Post([FromBody] SchoolDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -80,6 +80,10 @@ namespace SWARM.Server.Controllers.Schl
                 existCourse = new School();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SchoolName = _Item.SchoolName;
+                existCourse.CreatedBy = _Item.CreatedBy;
+                existCourse.CreatedDate = _Item.CreatedDate;
+                existCourse.ModifiedBy = _Item.ModifiedBy;
+                existCourse.ModifiedDate = _Item.ModifiedDate;
                 _context.Schools.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
@@ -93,7 +97,7 @@ namespace SWARM.Server.Controllers.Schl
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] School _Item)
+        public async Task<IActionResult> Put([FromBody] SchoolDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -109,6 +113,10 @@ namespace SWARM.Server.Controllers.Schl
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SchoolName = _Item.SchoolName;
+                existCourse.CreatedBy = _Item.CreatedBy;
+                existCourse.CreatedDate = _Item.CreatedDate;
+                existCourse.ModifiedBy = _Item.ModifiedBy;
+                existCourse.ModifiedDate = _Item.ModifiedDate;
                 _context.Schools.Update(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();

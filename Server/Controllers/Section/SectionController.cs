@@ -22,7 +22,7 @@ namespace SWARM.Server.Controllers.Sect
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SectionController : BaseController, iBaseController<Section>
+    public class SectionController : BaseController, iBaseController<SectionDTO>
     {
         public SectionController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
@@ -74,7 +74,7 @@ namespace SWARM.Server.Controllers.Sect
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Section _Item)
+        public async Task<IActionResult> Post([FromBody] SectionDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -91,6 +91,10 @@ namespace SWARM.Server.Controllers.Sect
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SectionNo = _Item.SectionNo;
                 existCourse.CourseGuidId = _Item.CourseGuidId;
+                existCourse.CreatedBy = _Item.CreatedBy;
+                existCourse.CreatedDate = _Item.CreatedDate;
+                existCourse.ModifiedBy = _Item.ModifiedBy;
+                existCourse.ModifiedDate = _Item.ModifiedDate;
                 _context.Sections.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
@@ -104,7 +108,7 @@ namespace SWARM.Server.Controllers.Sect
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Section _Item)
+        public async Task<IActionResult> Put([FromBody] SectionDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -120,6 +124,10 @@ namespace SWARM.Server.Controllers.Sect
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SectionNo = _Item.SectionNo;
                 existCourse.CourseGuidId = _Item.CourseGuidId;
+                existCourse.CreatedBy = _Item.CreatedBy;
+                existCourse.CreatedDate = _Item.CreatedDate;
+                existCourse.ModifiedBy = _Item.ModifiedBy;
+                existCourse.ModifiedDate = _Item.ModifiedDate;
                 _context.Sections.Update(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
