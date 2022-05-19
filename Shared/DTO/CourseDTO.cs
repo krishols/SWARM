@@ -12,7 +12,7 @@ namespace SWARM.Shared.DTO
         public string SchoolName { get; set; }
         public string GuidId { get; set;}
         public string CourseName { get; set; }
-        public string? PrereqGuidId { get; set; }
+        public string PrereqGuidId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }

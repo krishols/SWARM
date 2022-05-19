@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Telerik.DataSource.Trial" Version="2.1.1" />
+    <PackageReference Include="Telerik.Documents.Spreadsheet.Trial" Version="2022.2.428" />
+    <PackageReference Include="Telerik.Recurrence.Trial" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>

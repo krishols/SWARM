@@ -149,7 +149,7 @@ namespace SWARM.Server.Controllers.Crse
             DataEnvelope<CourseDTO> dataToReturn = null;
 
             //Original context call didn't seem to be returning data
-            /*
+            
             IQueryable<CourseDTO> queriableStates = _context.Courses
                 .Select(sp => new CourseDTO
                 {
@@ -160,8 +160,9 @@ namespace SWARM.Server.Controllers.Crse
                     SchoolGuidId = sp.SchoolGuidId,
                     SchoolName = sp.SchoolGuid.SchoolName
                 }) ;
-            */
-
+            Console.WriteLine(queriableStates.ToString());
+            
+            /*
             //Gets all courses in a list
             List<Course> lstCourses = await _context.Courses.OrderBy(x => x.CourseNo).ToListAsync();
 
@@ -179,14 +180,15 @@ namespace SWARM.Server.Controllers.Crse
 
             }
 
-
+            */
             // use the Telerik DataSource Extensions to perform the query on the data
             // the Telerik extension methods can also work on "regular" collections like List<T> and IQueriable<T>
             try
             {
 
                 //Not sure what this call does, seems to also lose the data though
-                DataSourceResult processedData = await lstCourses.ToDataSourceResultAsync(gridRequest);
+                DataSourceResult processedData = await queriableStates.ToDataSourceResultAsync(gridRequest);
+                Console.WriteLine(processedData.ToString());
 
                 if (gridRequest.Groups.Count > 0)
                 {
@@ -204,19 +206,19 @@ namespace SWARM.Server.Controllers.Crse
                 {
                     // When there is no grouping, the simplistic approach of 
                     // just serializing and deserializing the flat data is enough
-                    dataToReturn = new DataEnvelope<CourseDTO>
-                    {
+                //    dataToReturn = new DataEnvelope<CourseDTO>
+                //    {
                         //Adding DTOlst to current page data instead of process data like original seen below
-                        CurrentPageData = DTOlst,
-                        TotalItemCount = processedData.Total
-                    };
-                    /*
+                      //  CurrentPageData = DTOlst,
+                      //  TotalItemCount = processedData.Total
+                  //  };
+                    
                     dataToReturn = new DataEnvelope<CourseDTO>
                     {
                         CurrentPageData = processedData.Data.Cast<CourseDTO>().ToList(),
                         TotalItemCount = processedData.Total
                     };
-                    */
+                    
                 }
             }
             catch (Exception e)
