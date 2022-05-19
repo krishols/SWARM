@@ -20,7 +20,7 @@ namespace SWARM.Server.Controllers.Crse
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController : BaseController, iBaseController<Course>
+    public class CourseController : BaseController, iBaseController<CourseDTO>
     { 
     public CourseController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
@@ -82,7 +82,7 @@ namespace SWARM.Server.Controllers.Crse
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Course _Item)
+        public async Task<IActionResult> Post([FromBody] CourseDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -114,7 +114,7 @@ namespace SWARM.Server.Controllers.Crse
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Course _Item)
+        public async Task<IActionResult> Put([FromBody] CourseDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -140,6 +140,90 @@ namespace SWARM.Server.Controllers.Crse
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("GetCourses")]
+        public async Task<DataEnvelope<CourseDTO>> GetCoursesPost([FromBody] DataSourceRequest gridRequest)
+        {
+            DataEnvelope<CourseDTO> dataToReturn = null;
+
+            //Original context call didn't seem to be returning data
+            /*
+            IQueryable<CourseDTO> queriableStates = _context.Courses
+                .Select(sp => new CourseDTO
+                {
+                    CourseNo = sp.CourseNo,
+                    CourseName = sp.CourseName,
+                    GuidId = sp.GuidId,
+                    PrereqGuidId = sp.PrereqGuidId,
+                    SchoolGuidId = sp.SchoolGuidId,
+                    SchoolName = sp.SchoolGuid.SchoolName
+                }) ;
+            */
+
+            //Gets all courses in a list
+            List<Course> lstCourses = await _context.Courses.OrderBy(x => x.CourseNo).ToListAsync();
+
+            //Convert Courses to CourseDTO and adds it to new list
+            List<CourseDTO> DTOlst = new List<CourseDTO>();
+            foreach (Course c in lstCourses)
+            {
+                CourseDTO c1 = new CourseDTO();
+                c1.CourseName = c.CourseName;
+                c1.CourseNo = c.CourseNo;
+                c1.GuidId = c.GuidId;
+                c1.PrereqGuidId = c.PrereqGuidId;
+                c1.SchoolGuidId = c.SchoolGuidId;
+                DTOlst.Add(c1);
+
+            }
+
+
+            // use the Telerik DataSource Extensions to perform the query on the data
+            // the Telerik extension methods can also work on "regular" collections like List<T> and IQueriable<T>
+            try
+            {
+
+                //Not sure what this call does, seems to also lose the data though
+                DataSourceResult processedData = await lstCourses.ToDataSourceResultAsync(gridRequest);
+
+                if (gridRequest.Groups.Count > 0)
+                {
+                    // If there is grouping, use the field for grouped data
+                    // The app must be able to serialize and deserialize it
+                    // Example helper methods for this are available in this project
+                    // See the GroupDataHelper.DeserializeGroups and JsonExtensions.Deserialize methods
+                    dataToReturn = new DataEnvelope<CourseDTO>
+                    {
+                        GroupedData = processedData.Data.Cast<AggregateFunctionsGroup>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+                else
+                {
+                    // When there is no grouping, the simplistic approach of 
+                    // just serializing and deserializing the flat data is enough
+                    dataToReturn = new DataEnvelope<CourseDTO>
+                    {
+                        //Adding DTOlst to current page data instead of process data like original seen below
+                        CurrentPageData = DTOlst,
+                        TotalItemCount = processedData.Total
+                    };
+                    /*
+                    dataToReturn = new DataEnvelope<CourseDTO>
+                    {
+                        CurrentPageData = processedData.Data.Cast<CourseDTO>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                    */
+                }
+            }
+            catch (Exception e)
+            {
+                //fixme add decent exception handling
+            }
+            return dataToReturn;
         }
     }
 }
