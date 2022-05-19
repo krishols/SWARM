@@ -9,14 +9,14 @@ namespace SWARM.Shared.DTO
     public class CourseDTO
     {
         public int CourseNo { get; set; }
-        public string Description { get; set; }
-        public decimal? Cost { get; set; }
-        public int? Prerequisite { get; set; }
+        public string SchoolName { get; set; }
+        public string GuidId { get; set;}
+        public string CourseName { get; set; }
+        public string? PrereqGuidId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
-        public int SchoolId { get; set; }
-        public int? PrerequisiteSchoolId { get; set; }
+        public string SchoolGuidId { get; set; }
     }
 }
