@@ -20,7 +20,7 @@ namespace SWARM.Server.Controllers.Enroll
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnrollmentController : BaseController, iBaseController<Enrollment>
+    public class EnrollmentController : BaseController, iBaseController<EnrollmentDTO>
     {
         public EnrollmentController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
@@ -49,7 +49,7 @@ namespace SWARM.Server.Controllers.Enroll
         [Route("Get")]
         public async Task<IActionResult> Get()
         {
-            List<Enrollment> lstCourses = await _context.Enrollments.OrderBy(x => x.LastName).ToListAsync();
+            List<Enrollment> lstCourses = await _context.Enrollments.OrderBy(x => x.GuidId).ToListAsync();
             return Ok(lstCourses);
         }
 
@@ -62,7 +62,7 @@ namespace SWARM.Server.Controllers.Enroll
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Enrollment _Item)
+        public async Task<IActionResult> Post([FromBody] EnrollmentDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -77,13 +77,16 @@ namespace SWARM.Server.Controllers.Enroll
 
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.LastName = _Item.LastName;
-                existCourse.FirstName = _Item.FirstName;
                 existCourse.SectionGuidId = _Item.SectionGuidId;
+                existCourse.SectionGuidId = _Item.StudetnGuidId;
+                existCourse.CreatedBy = _Item.CreatedBy;
+                existCourse.CreatedDate = _Item.CreatedDate;
+                existCourse.ModifiedBy = _Item.ModifiedBy;
+                existCourse.ModifiedDate = _Item.ModifiedDate;
                 _context.Enrollments.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
-                return Ok(_Item.LastName);
+                return Ok(_Item.GuidId);
 
             }
             catch (Exception e)
@@ -93,7 +96,7 @@ namespace SWARM.Server.Controllers.Enroll
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Enrollment _Item)
+        public async Task<IActionResult> Put([FromBody] EnrollmentDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
@@ -107,13 +110,11 @@ namespace SWARM.Server.Controllers.Enroll
                 }
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.LastName = _Item.LastName;
-                existCourse.FirstName = _Item.FirstName;
                 existCourse.SectionGuidId = _Item.SectionGuidId;
-                _context.Enrollments.Add(existCourse);
+                _context.Enrollments.Update(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
-                return Ok(_Item.LastName);
+                return Ok(_Item.GuidId);
             }
             catch (Exception e)
             {
@@ -121,6 +122,63 @@ namespace SWARM.Server.Controllers.Enroll
             }
         }
 
+
+        [HttpPost]
+        [Route("GetEnrollments")]
+        public async Task<DataEnvelope<EnrollmentDTO>> GetCoursesPost([FromBody] DataSourceRequest gridRequest)
+        {
+            DataEnvelope<EnrollmentDTO> dataToReturn = null;
+
+            //Original context call didn't seem to be returning data
+
+            IQueryable<EnrollmentDTO> queriableStates = _context.Enrollments
+                .Select(sp => new EnrollmentDTO
+                {
+                    GuidId = sp.GuidId,
+                    SectionGuidId = sp.SectionGuidId,
+                    StudetnGuidId = sp.StudentGuidId,
+                    CreatedBy = sp.CreatedBy,
+                    CreatedDate = sp.CreatedDate,
+                    ModifiedBy = sp.ModifiedBy,
+                    ModifiedDate = sp.ModifiedDate
+                });
+
+
+            // use the Telerik DataSource Extensions to perform the query on the data
+            // the Telerik extension methods can also work on "regular" collections like List<T> and IQueriable<T>
+            try
+            {
+                DataSourceResult processedData = await queriableStates.ToDataSourceResultAsync(gridRequest);
+                if (gridRequest.Groups.Count > 0)
+                {
+                    // If there is grouping, use the field for grouped data
+                    // The app must be able to serialize and deserialize it
+                    // Example helper methods for this are available in this project
+                    // See the GroupDataHelper.DeserializeGroups and JsonExtensions.Deserialize methods
+                    dataToReturn = new DataEnvelope<EnrollmentDTO>
+                    {
+                        GroupedData = processedData.Data.Cast<AggregateFunctionsGroup>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+                else
+                {
+                    // When there is no grouping, the simplistic approach of 
+                    // just serializing and deserializing the flat data is enough
+                    dataToReturn = new DataEnvelope<EnrollmentDTO>
+                    {
+                        CurrentPageData = processedData.Data.Cast<EnrollmentDTO>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+            }
+
+            catch (Exception e)
+            {
+                //fixme add decent exception handling
+            }
+            return dataToReturn;
+        }
 
     }
 }

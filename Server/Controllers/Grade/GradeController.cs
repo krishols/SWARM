@@ -16,16 +16,14 @@ using System.Threading.Tasks;
 using Telerik.DataSource;
 using Telerik.DataSource.Extensions;
 using SWARM.Server.Controllers.Base;
-
-namespace SWARM.Server.Controllers.Schl
+namespace SWARM.Server.Controllers.Grd
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SchoolController : BaseController, iBaseController<SchoolDTO>
+    public class GradeController : BaseController, iBaseController<GradeDTO>
     {
-        public SchoolController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
+        public GradeController(SWARMOracleContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
-
         }
 
         [Route("Delete/{KeyValue}")]
@@ -34,7 +32,7 @@ namespace SWARM.Server.Controllers.Schl
             var trans = _context.Database.BeginTransaction();
             try
             {
-                School itmCourse = await _context.Schools.Where(x => x.GuidId == KeyValue).FirstOrDefaultAsync();
+                Grade itmCourse = await _context.Grades.Where(x => x.GuidId == KeyValue).FirstOrDefaultAsync();
                 _context.Remove(itmCourse);
                 await _context.SaveChangesAsync();
                 await trans.CommitAsync();
@@ -51,7 +49,7 @@ namespace SWARM.Server.Controllers.Schl
         [Route("Get")]
         public async Task<IActionResult> Get()
         {
-            List<School> lstCourses = await _context.Schools.OrderBy(x => x.SchoolName).ToListAsync();
+            List<Grade> lstCourses = await _context.Grades.OrderBy(x => x.GuidId).ToListAsync();
             return Ok(lstCourses);
         }
 
@@ -59,35 +57,36 @@ namespace SWARM.Server.Controllers.Schl
         [Route("Get/{KeyValue}")]
         public async Task<IActionResult> Get(string KeyValue)
         {
-            School itmCourse = await _context.Schools.Where(x => x.GuidId == KeyValue).FirstOrDefaultAsync();
+            Grade itmCourse = await _context.Grades.Where(x => x.GuidId == KeyValue).FirstOrDefaultAsync();
             return Ok(itmCourse);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SchoolDTO _Item)
+        public async Task<IActionResult> Post([FromBody] GradeDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
             {
 
-                var existCourse = await _context.Schools.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
+                var existCourse = await _context.Grades.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
                 if (existCourse != null)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Section already exists.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Enrollment already exists.");
                 }
 
-                existCourse = new School();
+                existCourse = new Grade();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.SchoolName = _Item.SchoolName;
+                existCourse.EnrollmentGuid = _Item.EnrollmentGuid;
+                existCourse.Grade1 = _Item.Grade;
                 existCourse.CreatedBy = _Item.CreatedBy;
                 existCourse.CreatedDate = _Item.CreatedDate;
                 existCourse.ModifiedBy = _Item.ModifiedBy;
                 existCourse.ModifiedDate = _Item.ModifiedDate;
-                _context.Schools.Add(existCourse);
+                _context.Grades.Add(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
-                return Ok(_Item.SchoolName);
+                return Ok(_Item.GuidId);
 
             }
             catch (Exception e)
@@ -97,30 +96,30 @@ namespace SWARM.Server.Controllers.Schl
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] SchoolDTO _Item)
+        public async Task<IActionResult> Put([FromBody] GradeDTO _Item)
         {
             var trans = _context.Database.BeginTransaction();
             try
             {
-                var existCourse = await _context.Schools.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
+                var existCourse = await _context.Grades.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
                 if (existCourse != null)
                 {
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new School();
+                existCourse = new Grade();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.GuidId = _Item.GuidId;
-                existCourse.SchoolName = _Item.SchoolName;
+                existCourse.EnrollmentGuid = _Item.EnrollmentGuid;
+                existCourse.Grade1 = _Item.Grade;
                 existCourse.CreatedBy = _Item.CreatedBy;
                 existCourse.CreatedDate = _Item.CreatedDate;
                 existCourse.ModifiedBy = _Item.ModifiedBy;
                 existCourse.ModifiedDate = _Item.ModifiedDate;
-                _context.Schools.Update(existCourse);
+                _context.Grades.Update(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
-                return Ok(_Item.SchoolName);
+                return Ok(_Item.GuidId);
             }
             catch (Exception e)
             {
@@ -128,20 +127,20 @@ namespace SWARM.Server.Controllers.Schl
             }
         }
 
-
         [HttpPost]
-        [Route("GetSchools")]
-        public async Task<DataEnvelope<SchoolDTO>> GetCoursesPost([FromBody] DataSourceRequest gridRequest)
+        [Route("GetGrades")]
+        public async Task<DataEnvelope<GradeDTO>> GetCoursesPost([FromBody] DataSourceRequest gridRequest)
         {
-            DataEnvelope<SchoolDTO> dataToReturn = null;
+            DataEnvelope<GradeDTO> dataToReturn = null;
 
             //Original context call didn't seem to be returning data
 
-            IQueryable<SchoolDTO> queriableStates = _context.Schools
-                .Select(sp => new SchoolDTO
+            IQueryable<GradeDTO> queriableStates = _context.Grades
+                .Select(sp => new GradeDTO
                 {
                     GuidId = sp.GuidId,
-                    SchoolName = sp.SchoolName,
+                    EnrollmentGuid = sp.EnrollmentGuid,
+                    Grade = sp.Grade1,
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,
@@ -160,7 +159,7 @@ namespace SWARM.Server.Controllers.Schl
                     // The app must be able to serialize and deserialize it
                     // Example helper methods for this are available in this project
                     // See the GroupDataHelper.DeserializeGroups and JsonExtensions.Deserialize methods
-                    dataToReturn = new DataEnvelope<SchoolDTO>
+                    dataToReturn = new DataEnvelope<GradeDTO>
                     {
                         GroupedData = processedData.Data.Cast<AggregateFunctionsGroup>().ToList(),
                         TotalItemCount = processedData.Total
@@ -170,9 +169,9 @@ namespace SWARM.Server.Controllers.Schl
                 {
                     // When there is no grouping, the simplistic approach of 
                     // just serializing and deserializing the flat data is enough
-                    dataToReturn = new DataEnvelope<SchoolDTO>
+                    dataToReturn = new DataEnvelope<GradeDTO>
                     {
-                        CurrentPageData = processedData.Data.Cast<SchoolDTO>().ToList(),
+                        CurrentPageData = processedData.Data.Cast<GradeDTO>().ToList(),
                         TotalItemCount = processedData.Total
                     };
                 }

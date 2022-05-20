@@ -25,6 +25,8 @@ namespace SWARM.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("SWARM.ServerAPI"));
 
+            // register the Telerik services
+            builder.Services.AddTelerikBlazor();
 
             builder.Services.AddScoped<CourseService>();
             builder.Services.AddApiAuthorization();
