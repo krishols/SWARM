@@ -35,11 +35,13 @@
     <Folder Include="Pages\School\" />
     <Folder Include="Pages\Student\" />
     <Folder Include="Pages\Section\" />
+    <Folder Include="Pages\Enrollment\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Pages\School\" />
     <None Remove="Pages\Student\" />
     <None Remove="Pages\Section\" />
+    <None Remove="Pages\Enrollment\" />
   </ItemGroup>
 </Project>

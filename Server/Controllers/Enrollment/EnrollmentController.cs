@@ -75,10 +75,16 @@ namespace SWARM.Server.Controllers.Enroll
                     return StatusCode(StatusCodes.Status500InternalServerError, "Enrollment already exists.");
                 }
 
+                var stu = await _context.Students.Where(x => x.FirstName == _Item.FirstName
+               && x.LastName == _Item.LastName).FirstOrDefaultAsync();
+
+                var sec = await _context.Sections.Where(x => x.SectionNo == _Item.SectionNo
+                && x.CourseGuid.CourseNo == _Item.CourseNo).FirstOrDefaultAsync();
+
                 existCourse = new Enrollment();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.SectionGuidId = _Item.SectionGuidId;
-                existCourse.SectionGuidId = _Item.StudetnGuidId;
+                existCourse.SectionGuidId = sec.GuidId;
+                existCourse.StudentGuidId = stu.GuidId;
                 existCourse.CreatedBy = _Item.CreatedBy;
                 existCourse.CreatedDate = _Item.CreatedDate;
                 existCourse.ModifiedBy = _Item.ModifiedBy;
@@ -103,14 +109,21 @@ namespace SWARM.Server.Controllers.Enroll
             {
                 var existCourse = await _context.Enrollments.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new Enrollment();
+
+                var stu = await _context.Students.Where(x => x.FirstName == _Item.FirstName
+                && x.LastName == _Item.LastName).FirstOrDefaultAsync();
+
+                var sec = await _context.Sections.Where(x => x.SectionNo == _Item.SectionNo
+                && x.CourseGuid.CourseNo == _Item.CourseNo).FirstOrDefaultAsync();
+
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.SectionGuidId = _Item.SectionGuidId;
+                existCourse.SectionGuidId = sec.GuidId;
+                existCourse.StudentGuidId = stu.GuidId;
                 _context.Enrollments.Update(existCourse);
                 await _context.SaveChangesAsync();
                 trans.Commit();
@@ -136,12 +149,16 @@ namespace SWARM.Server.Controllers.Enroll
                 {
                     GuidId = sp.GuidId,
                     SectionGuidId = sp.SectionGuidId,
-                    StudetnGuidId = sp.StudentGuidId,
+                    StudentGuidId = sp.StudentGuidId,
+                    FirstName = sp.StudentGuid.FirstName,
+                    LastName = sp.StudentGuid.LastName,
+                    SectionNo = sp.SectionGuid.SectionNo,
+                    CourseNo = sp.SectionGuid.CourseGuid.CourseNo,
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,
                     ModifiedDate = sp.ModifiedDate
-                });
+                }) ;
 
 
             // use the Telerik DataSource Extensions to perform the query on the data
