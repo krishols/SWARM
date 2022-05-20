@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Telerik.Blazor.Components;
@@ -82,7 +83,7 @@ namespace SWARM.Client.Pages.Course
             //var httpDTO = new JsonConvert.SerializeObject(_CourseDTO);
             var serDTO = JsonSerializer.Serialize(_CourseDTO);
             //serDTO.Remove("GuidId");
-            var result = await Http.PutAsJsonAsync("api/Course", serDTO);
+            var result = await Http.PutAsync("api/Course", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
             Console.WriteLine(result.ToString());
             /*
             var MyData = new
