@@ -96,11 +96,13 @@ namespace SWARM.Server.Controllers.Crse
                     return StatusCode(StatusCodes.Status500InternalServerError, "Course already exists.");
                 }
 
+                var schguid = await _context.Schools.Where(x => x.SchoolName == _Item.SchoolName).FirstOrDefaultAsync();
+
                 existCourse = new Course();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.CourseName = _Item.CourseName;
                 existCourse.PrereqGuidId = _Item.PrereqGuidId;
-                existCourse.SchoolGuidId = _Item.SchoolGuidId;
+                existCourse.SchoolGuidId = schguid.GuidId;
                 existCourse.CourseNo = _Item.CourseNo;
                 _context.Courses.Add(existCourse);
                 await _context.SaveChangesAsync();
@@ -122,12 +124,13 @@ namespace SWARM.Server.Controllers.Crse
             {
                 var existCourse = await _context.Courses.Where(x => x.CourseNo == _Item.CourseNo).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
+                    trans.Commit();
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new Course();
+                //existCourse = new Course();
                 existCourse.CourseName = _Item.CourseName;
                 existCourse.PrereqGuidId = _Item.PrereqGuidId;
                 existCourse.SchoolGuidId = _Item.SchoolGuidId;
