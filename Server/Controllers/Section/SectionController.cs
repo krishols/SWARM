@@ -87,10 +87,11 @@ namespace SWARM.Server.Controllers.Sect
                     return StatusCode(StatusCodes.Status500InternalServerError, "Section already exists.");
                 }
 
+                var courseSup = await _context.Courses.Where(x => x.CourseNo == _Item.CourseNo).FirstOrDefaultAsync();
                 existCourse = new Section();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SectionNo = _Item.SectionNo;
-                existCourse.CourseGuidId = _Item.CourseGuidId;
+                existCourse.CourseGuidId = courseSup.GuidId;
                 existCourse.CreatedBy = _Item.CreatedBy;
                 existCourse.CreatedDate = _Item.CreatedDate;
                 existCourse.ModifiedBy = _Item.ModifiedBy;
@@ -115,12 +116,11 @@ namespace SWARM.Server.Controllers.Sect
             {
                 var existCourse = await _context.Sections.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new Section();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SectionNo = _Item.SectionNo;
                 existCourse.CourseGuidId = _Item.CourseGuidId;
@@ -153,6 +153,8 @@ namespace SWARM.Server.Controllers.Sect
                     GuidId = sp.GuidId,
                     SectionNo = sp.SectionNo,
                     CourseGuidId = sp.CourseGuidId,
+                    CourseNo = sp.CourseGuid.CourseNo,
+                    CourseName = sp.CourseGuid.CourseName,
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,

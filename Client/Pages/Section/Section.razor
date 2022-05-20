@@ -1,0 +1,56 @@
+﻿@page "/Section"
+@inherits SwarmUI
+@attribute [Authorize]
+
+<TelerikGrid @ref="@Grid"
+             TItem="SectionDTO"
+             SortMode="@SortMode.Multiple"
+             Height="700px"
+             Pageable="true"
+             Sortable="true"
+             Groupable="false"
+             @bind-PageSize="@PageSize"
+             PageChanged="@PageChangedHandler"
+             Page="@PageIndex"
+             FilterMode="@GridFilterMode.FilterMenu"
+             Resizable="true"
+             Reorderable="true"
+             OnUpdate="@UpdateSection"
+             OnDelete="@DeleteSection"
+             OnRead=@ReadItems
+             OnCreate="@NewSection"
+             ShowColumnMenu="true"
+             ConfirmDelete="true"
+             EditMode="@GridEditMode.Inline">
+
+    <GridSettings>
+        <GridColumnMenuSettings Lockable="false">
+        </GridColumnMenuSettings>
+        <GridPagerSettings InputType="PagerInputType.Input" PageSizes="@PageSizes" />
+    </GridSettings>
+
+    <GridToolBar>
+        <GridCommandButton Command="Add" Icon="add">Add Course</GridCommandButton>
+        <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
+        <label class="k-checkbox-label"><TelerikCheckBox @bind-Value="@ExportAllPages" /> Export All Pages</label>
+        <span class="k-toolbar-spacer"></span> @* add this spacer to keep the searchbox on the right *@
+    </GridToolBar>
+
+    <GridExport>
+        <GridExcelExport FileName="telerik-grid-export" AllPages="@ExportAllPages" />
+    </GridExport>
+
+    <GridColumns>
+        <GridColumn Field="@(nameof(SectionDTO.GuidId))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="false" Visible="false" />
+        <GridColumn Field="@(nameof(SectionDTO.CourseNo))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(SectionDTO.CourseName))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(SectionDTO.SectionNo))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
+        <GridCommandColumn Width="250px">
+            <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+            <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+            <GridCommandButton Command="Cancel" Icon="cancel" ShowInEdit="true">Cancel</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+
+</TelerikGrid>

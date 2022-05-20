@@ -31,6 +31,7 @@ namespace SWARM.Client
             builder.Services.AddScoped<CourseService>();
             builder.Services.AddScoped<SchoolService>();
             builder.Services.AddScoped<StudentService>();
+            builder.Services.AddScoped <SectionService>();
             builder.Services.AddApiAuthorization();
 
             await builder.Build().RunAsync();

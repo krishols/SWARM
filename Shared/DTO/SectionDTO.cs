@@ -9,6 +9,8 @@ namespace SWARM.Shared.DTO
     {
         public int SectionNo { get; set; }
         public string GuidId { get; set; }
+        public int CourseNo { get; set; }
+        public string CourseName { get; set; }
         public string CourseGuidId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
