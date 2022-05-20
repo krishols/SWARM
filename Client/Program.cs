@@ -29,6 +29,7 @@ namespace SWARM.Client
             builder.Services.AddTelerikBlazor();
 
             builder.Services.AddScoped<CourseService>();
+            builder.Services.AddScoped<SchoolService>();
             builder.Services.AddApiAuthorization();
 
             await builder.Build().RunAsync();

@@ -81,6 +81,7 @@ namespace SWARM.Client.Pages.School
             Console.WriteLine("HELLO FROM UPDATESCHOOL");
             SchoolDTO _SchoolDTO = e.Item as SchoolDTO;
             var serDTO = JsonSerializer.Serialize(_SchoolDTO);
+            Console.WriteLine(serDTO);
             var result = await Http.PutAsync("api/School", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
             Console.WriteLine(result.ToString());
 
@@ -91,6 +92,7 @@ namespace SWARM.Client.Pages.School
             Console.WriteLine("HELLO FROM NEWSCHOOL");
             SchoolDTO _SchoolDTO = e.Item as SchoolDTO;
             var serDTO = JsonSerializer.Serialize(_SchoolDTO);
+            Console.WriteLine(serDTO);
             var result = await Http.PostAsync("api/School", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
         }
 

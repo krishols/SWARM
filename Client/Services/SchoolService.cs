@@ -29,7 +29,7 @@ namespace SWARM.Client.Services
                 ReferenceHandler = ReferenceHandler.Preserve,
                 PropertyNameCaseInsensitive = true
             };
-            HttpResponseMessage response = await Http.PostAsJsonAsync("api/Course/GetSchools", gridRequest);
+            HttpResponseMessage response = await Http.PostAsJsonAsync("api/School/GetSchools", gridRequest);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {

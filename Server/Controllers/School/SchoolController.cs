@@ -70,11 +70,11 @@ namespace SWARM.Server.Controllers.Schl
             try
             {
 
-                var existCourse = await _context.Schools.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
+                var existCourse = await _context.Schools.Where(x => x.SchoolName == _Item.SchoolName).FirstOrDefaultAsync();
 
                 if (existCourse != null)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Section already exists.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "School already exists.");
                 }
 
                 existCourse = new School();
@@ -104,13 +104,13 @@ namespace SWARM.Server.Controllers.Schl
             {
                 var existCourse = await _context.Schools.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
+                    trans.Commit();
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new School();
-                existCourse.GuidId = _Item.GuidId;
+                //existCourse = new School();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.SchoolName = _Item.SchoolName;
                 existCourse.CreatedBy = _Item.CreatedBy;

@@ -40,21 +40,5 @@ namespace SWARM.Client.Services
             throw new Exception($"The service returned with status {response.StatusCode}");
         }
 
-        public async void CreateCoursesService(CourseDTO course)
-        {
-            /*
-            if (!_products.Any())
-            {
-                product.ProductId = 1;
-            }
-            else
-            {
-                product.ProductId = _products.Max(p => p.ProductId) + 1;
-            }
-
-            _products.Insert(0, product);
-            */
-        }
-
     }
 }
