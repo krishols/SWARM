@@ -91,6 +91,7 @@ namespace SWARM.Client.Pages.School
         {
             Console.WriteLine("HELLO FROM NEWSCHOOL");
             SchoolDTO _SchoolDTO = e.Item as SchoolDTO;
+            _SchoolDTO.GuidId = "temp";
             var serDTO = JsonSerializer.Serialize(_SchoolDTO);
             Console.WriteLine(serDTO);
             var result = await Http.PostAsync("api/School", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
