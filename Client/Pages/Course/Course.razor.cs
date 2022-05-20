@@ -100,14 +100,20 @@ namespace SWARM.Client.Pages.Course
 
         private async void NewCourse(GridCommandEventArgs e)
         {
-            String EmptyGuid = Guid.Empty.ToString();
-            NavManager.NavigateTo($"/Course/Detail/{EmptyGuid}");
+            Console.WriteLine("HELLO FROM NEWCOURSE");
+            CourseDTO _CourseDTO = e.Item as CourseDTO;
+            //var httpDTO = new JsonConvert.SerializeObject(_CourseDTO);
+            var serDTO = JsonSerializer.Serialize(_CourseDTO);
+            //serDTO.Remove("GuidId");
+            var result = await Http.PostAsync("api/Course", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
         }
 
         private void DeleteCourse(GridCommandEventArgs e)
         {
             CourseDTO _CourseDTO = e.Item as CourseDTO;
-            NavManager.NavigateTo($"/Course/DeleteCourse/{_CourseDTO.CourseNo}");
+            var result = Http.DeleteAsync($"api/Course/Delete/{_CourseDTO.GuidId}");
+
+            
         }
 
 
