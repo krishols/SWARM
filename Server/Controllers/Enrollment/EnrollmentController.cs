@@ -123,5 +123,62 @@ namespace SWARM.Server.Controllers.Enroll
         }
 
 
+        [HttpPost]
+        [Route("GetEnrollments")]
+        public async Task<DataEnvelope<EnrollmentDTO>> GetCoursesPost([FromBody] DataSourceRequest gridRequest)
+        {
+            DataEnvelope<EnrollmentDTO> dataToReturn = null;
+
+            //Original context call didn't seem to be returning data
+
+            IQueryable<EnrollmentDTO> queriableStates = _context.Enrollments
+                .Select(sp => new EnrollmentDTO
+                {
+                    GuidId = sp.GuidId,
+                    SectionGuidId = sp.SectionGuidId,
+                    StudetnGuidId = sp.StudentGuidId,
+                    CreatedBy = sp.CreatedBy,
+                    CreatedDate = sp.CreatedDate,
+                    ModifiedBy = sp.ModifiedBy,
+                    ModifiedDate = sp.ModifiedDate
+                });
+
+
+            // use the Telerik DataSource Extensions to perform the query on the data
+            // the Telerik extension methods can also work on "regular" collections like List<T> and IQueriable<T>
+            try
+            {
+                DataSourceResult processedData = await queriableStates.ToDataSourceResultAsync(gridRequest);
+                if (gridRequest.Groups.Count > 0)
+                {
+                    // If there is grouping, use the field for grouped data
+                    // The app must be able to serialize and deserialize it
+                    // Example helper methods for this are available in this project
+                    // See the GroupDataHelper.DeserializeGroups and JsonExtensions.Deserialize methods
+                    dataToReturn = new DataEnvelope<EnrollmentDTO>
+                    {
+                        GroupedData = processedData.Data.Cast<AggregateFunctionsGroup>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+                else
+                {
+                    // When there is no grouping, the simplistic approach of 
+                    // just serializing and deserializing the flat data is enough
+                    dataToReturn = new DataEnvelope<EnrollmentDTO>
+                    {
+                        CurrentPageData = processedData.Data.Cast<EnrollmentDTO>().ToList(),
+                        TotalItemCount = processedData.Total
+                    };
+                }
+            }
+
+            catch (Exception e)
+            {
+                //fixme add decent exception handling
+            }
+            return dataToReturn;
+        }
+
     }
 }
