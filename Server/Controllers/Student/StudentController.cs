@@ -68,7 +68,7 @@ namespace SWARM.Server.Controllers.Stu
             try
             {
 
-                var existCourse = await _context.Students.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
+                var existCourse = await _context.Students.Where(x => x.StudentId == _Item.StudentId).FirstOrDefaultAsync();
 
                 if (existCourse != null)
                 {
@@ -104,12 +104,12 @@ namespace SWARM.Server.Controllers.Stu
             {
                 var existCourse = await _context.Students.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
+                    trans.Commit();
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new Student();
                 existCourse.GuidId = _Item.GuidId;
                 existCourse.StudentId = _Item.StudentId;
                 existCourse.FirstName = _Item.FirstName;
