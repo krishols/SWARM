@@ -71,16 +71,24 @@ namespace SWARM.Client.Pages.Course
             StateHasChanged();
         }
 
-        private void NewCourse(GridCommandEventArgs e)
+        private async void UpdateCourse(GridCommandEventArgs e)
+        {
+            CourseDTO _CourseDTO = e.Item as CourseDTO;
+        }
+
+        private async void NewCourse(GridCommandEventArgs e)
         {
             String EmptyGuid = Guid.Empty.ToString();
             NavManager.NavigateTo($"/Course/Detail/{EmptyGuid}");
         }
+
         private void DeleteCourse(GridCommandEventArgs e)
         {
             CourseDTO _CourseDTO = e.Item as CourseDTO;
             NavManager.NavigateTo($"/Course/DeleteCourse/{_CourseDTO.CourseNo}");
         }
+
+
     }
 
 

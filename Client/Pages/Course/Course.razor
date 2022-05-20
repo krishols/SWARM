@@ -15,10 +15,13 @@
              FilterMode="@GridFilterMode.FilterMenu"
              Resizable="true"
              Reorderable="true"
+             OnUpdate="@UpdateCourse"
              OnDelete="@DeleteCourse"
              OnRead=@ReadItems
+             OnCreate="@NewCourse"
              ShowColumnMenu="true"
-             ConfirmDelete="true">
+             ConfirmDelete="true"
+             EditMode="@GridEditMode.Inline">
 
     <GridSettings>
         <GridColumnMenuSettings Lockable="false">
@@ -27,11 +30,10 @@
     </GridSettings>
 
     <GridToolBar>
-        <GridCommandButton Command="NewUser" OnClick="@NewCourse" Icon="add">Add User</GridCommandButton>
+        <GridCommandButton Command="Add" Icon="add">Add Course</GridCommandButton>
         <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
         <label class="k-checkbox-label"><TelerikCheckBox @bind-Value="@ExportAllPages" /> Export All Pages</label>
         <span class="k-toolbar-spacer"></span> @* add this spacer to keep the searchbox on the right *@
-        <GridSearchBox DebounceDelay="200"></GridSearchBox>
     </GridToolBar>
 
     <GridExport>
@@ -40,8 +42,15 @@
 
     <GridColumns>
         <GridColumn Field="@(nameof(CourseDTO.GuidId))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="false" Visible="false" />
-        <GridColumn Field="@(nameof(CourseDTO.CourseNo))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="false" Visible="true" />
+        <GridColumn Field="@(nameof(CourseDTO.CourseNo))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="true" Visible="true" />
         <GridColumn Field="@(nameof(CourseDTO.CourseName))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(CourseDTO.SchoolName))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
+        <GridCommandColumn Width="250px">
+            <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+            <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+            <GridCommandButton Command="Cancel" Icon="cancel" ShowInEdit="true">Cancel</GridCommandButton>
+        </GridCommandColumn>
     </GridColumns>
 
 </TelerikGrid>
