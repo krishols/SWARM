@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Newtonsoft.Json;
 using SWARM.Client.Helper;
 using SWARM.Client.Services;
 using SWARM.Shared;
@@ -7,9 +8,12 @@ using SWARM.Shared.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Telerik.Blazor.Components;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SWARM.Client.Pages.Course
 {
@@ -73,7 +77,24 @@ namespace SWARM.Client.Pages.Course
 
         private async void UpdateCourse(GridCommandEventArgs e)
         {
+            Console.WriteLine("HELLO FROM UPDATECOURSE");
             CourseDTO _CourseDTO = e.Item as CourseDTO;
+            //var httpDTO = new JsonConvert.SerializeObject(_CourseDTO);
+            var serDTO = JsonSerializer.Serialize(_CourseDTO);
+            //serDTO.Remove("GuidId");
+            var result = await Http.PutAsJsonAsync("api/Course", serDTO);
+            Console.WriteLine(result.ToString());
+            /*
+            var MyData = new
+            {
+                CourseNo = _CourseDTO.CourseNo,
+                SchoolName = _CourseDTO.SchoolName,
+                CourseName = _CourseDTO.CourseName
+            };
+            */
+            //string jsonData = JsonConvert.SerializeObject(MyData);
+            //var result = await Http.PutAsJsonAsync("api/Course/", jsonData);
+
         }
 
         private async void NewCourse(GridCommandEventArgs e)

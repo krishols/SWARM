@@ -122,12 +122,13 @@ namespace SWARM.Server.Controllers.Crse
             {
                 var existCourse = await _context.Courses.Where(x => x.CourseNo == _Item.CourseNo).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
+                    trans.Commit();
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new Course();
+                //existCourse = new Course();
                 existCourse.CourseName = _Item.CourseName;
                 existCourse.PrereqGuidId = _Item.PrereqGuidId;
                 existCourse.SchoolGuidId = _Item.SchoolGuidId;

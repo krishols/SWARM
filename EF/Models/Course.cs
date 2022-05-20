@@ -22,18 +22,18 @@ namespace SWARM.EF.Models
         public int CourseNo { get; set; }
         [Key]
         [Column("GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string GuidId { get; set; }
         [Required]
         [Column("COURSE_NAME")]
         [StringLength(20)]
         public string CourseName { get; set; }
         [Column("PREREQ_GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string PrereqGuidId { get; set; }
         [Required]
         [Column("SCHOOL_GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string SchoolGuidId { get; set; }
         [Required]
         [Column("CREATED_BY")]
