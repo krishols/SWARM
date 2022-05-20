@@ -47,7 +47,12 @@ namespace SWARM.Server
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
-                .AddIdentityServerJwt();
+                .AddIdentityServerJwt()
+                .AddGoogle(o =>
+                      {
+                          o.ClientId = Configuration["Authentication:Google:ClientId"];
+                          o.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                      });
 
 
 
