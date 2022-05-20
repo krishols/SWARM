@@ -2,6 +2,8 @@
 using NPOI.SS.Formula.Functions;
 using SWARM.EF.Models;
 using System.Threading.Tasks;
+using SWARM.Shared;
+using SWARM.Shared.DTO;
 
 namespace SWARM.Server.Controllers.Base
 {

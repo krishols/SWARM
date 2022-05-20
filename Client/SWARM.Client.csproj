@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'SWARM' " />
   <ItemGroup>
 
 	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.13" />
@@ -29,6 +30,10 @@
 
   <ItemGroup>
     <Folder Include="Shared\Course\" />
+    <Folder Include="Pages\School\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Pages\School\" />
+  </ItemGroup>
 </Project>
