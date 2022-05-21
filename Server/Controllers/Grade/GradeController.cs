@@ -141,7 +141,6 @@ namespace SWARM.Server.Controllers.Grd
                     GuidId = sp.GuidId,
                     EnrollmentGuidId = sp.EnrollmentGuid,
                     Grade = sp.Grade1,
-                    FirstName = sp.EnrollmentGuid.
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,
