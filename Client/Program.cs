@@ -36,6 +36,8 @@ namespace SWARM.Client
             builder.Services.AddScoped<GradeService>();
             builder.Services.AddApiAuthorization();
 
+      
+
             await builder.Build().RunAsync();
         }
     }

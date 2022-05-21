@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.15" />
     <PackageReference Include="NPOI" Version="2.5.6" />
+  <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +39,7 @@
     <None Remove="Controllers\Enrollment\" />
     <None Remove="Controllers\Student\" />
     <None Remove="Controllers\Grade\" />
+     <None Remove="Microsoft.AspNetCore.Authentication.Google" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Course\" />

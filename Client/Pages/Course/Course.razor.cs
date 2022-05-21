@@ -46,7 +46,6 @@ namespace SWARM.Client.Pages.Course
         }
         private async Task LoadLookupData()
         {
-            //School?
           lstcourse = await Http.GetFromJsonAsync<List<Course>>("api/Course/GetCourses", options);
         }
 
@@ -57,11 +56,7 @@ namespace SWARM.Client.Pages.Course
 
             if (args.Request.Groups.Count > 0)
             {
-                /***
-                NO GROUPING FOR THE TIME BEING
-                var data = GroupDataHelpers.DeserializeGroups<WeatherForecast>(result.GroupedData);
-                GridData = data.Cast<object>().ToList();
-                ***/
+              
             }
             else
             {
@@ -78,33 +73,17 @@ namespace SWARM.Client.Pages.Course
 
         private async void UpdateCourse(GridCommandEventArgs e)
         {
-            Console.WriteLine("HELLO FROM UPDATECOURSE");
             CourseDTO _CourseDTO = e.Item as CourseDTO;
-            //var httpDTO = new JsonConvert.SerializeObject(_CourseDTO);
             var serDTO = JsonSerializer.Serialize(_CourseDTO);
-            //serDTO.Remove("GuidId");
             var result = await Http.PutAsync("api/Course", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
-            Console.WriteLine(result.ToString());
-            /*
-            var MyData = new
-            {
-                CourseNo = _CourseDTO.CourseNo,
-                SchoolName = _CourseDTO.SchoolName,
-                CourseName = _CourseDTO.CourseName
-            };
-            */
-            //string jsonData = JsonConvert.SerializeObject(MyData);
-            //var result = await Http.PutAsJsonAsync("api/Course/", jsonData);
+       
 
         }
 
         private async void NewCourse(GridCommandEventArgs e)
         {
-            Console.WriteLine("HELLO FROM NEWCOURSE");
             CourseDTO _CourseDTO = e.Item as CourseDTO;
-            //var httpDTO = new JsonConvert.SerializeObject(_CourseDTO);
             var serDTO = JsonSerializer.Serialize(_CourseDTO);
-            //serDTO.Remove("GuidId");
             var result = await Http.PostAsync("api/Course", new StringContent(serDTO, UnicodeEncoding.UTF8, "application/json"));
         }
 
