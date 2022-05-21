@@ -11,8 +11,10 @@ namespace SWARM.Shared.DTO
         public string EnrollmentGuidId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public int StudentId { get; set; }
         public int CourseNo { get; set; }
-        public byte Grade { get; set; }
+        public int SectionNo { get; set; }
+        public int Grade { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }

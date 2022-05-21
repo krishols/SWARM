@@ -75,18 +75,28 @@ namespace SWARM.Server.Controllers.Grd
                     return StatusCode(StatusCodes.Status500InternalServerError, "Enrollment already exists.");
                 }
 
-                existCourse = new Grade();
-                existCourse.GuidId = _Item.GuidId;
-                existCourse.EnrollmentGuidId = _Item.EnrollmentGuidId;
-                existCourse.Grade1 = _Item.Grade;
-                existCourse.CreatedBy = _Item.CreatedBy;
-                existCourse.CreatedDate = _Item.CreatedDate;
-                existCourse.ModifiedBy = _Item.ModifiedBy;
-                existCourse.ModifiedDate = _Item.ModifiedDate;
-                _context.Grades.Add(existCourse);
-                await _context.SaveChangesAsync();
-                trans.Commit();
-                return Ok(_Item.GuidId);
+                var enr = await _context.Enrollments.Where(x => x.SectionGuid.CourseGuid.CourseNo == _Item.CourseNo
+                    &&
+                    x.SectionGuid.SectionNo == _Item.SectionNo
+                    &&
+                    x.StudentGuid.StudentId == _Item.StudentId).FirstOrDefaultAsync();
+                if (enr != null)
+                {
+                    existCourse = new Grade();
+                    existCourse.GuidId = _Item.GuidId;
+                    existCourse.EnrollmentGuidId = enr.GuidId;
+                    existCourse.Grade1 = _Item.Grade;
+                    existCourse.CreatedBy = _Item.CreatedBy;
+                    existCourse.CreatedDate = _Item.CreatedDate;
+                    existCourse.ModifiedBy = _Item.ModifiedBy;
+                    existCourse.ModifiedDate = _Item.ModifiedDate;
+                    _context.Grades.Add(existCourse);
+                    await _context.SaveChangesAsync();
+                    trans.Commit();
+                    return Ok(_Item.GuidId);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Post");
 
             }
             catch (Exception e)
@@ -103,23 +113,31 @@ namespace SWARM.Server.Controllers.Grd
             {
                 var existCourse = await _context.Grades.Where(x => x.GuidId == _Item.GuidId).FirstOrDefaultAsync();
 
-                if (existCourse != null)
+                if (existCourse == null)
                 {
                     await this.Post(_Item);
                     return Ok();
                 }
-                existCourse = new Grade();
-                existCourse.GuidId = _Item.GuidId;
-                existCourse.EnrollmentGuidId = _Item.EnrollmentGuidId;
-                existCourse.Grade1 = _Item.Grade;
-                existCourse.CreatedBy = _Item.CreatedBy;
-                existCourse.CreatedDate = _Item.CreatedDate;
-                existCourse.ModifiedBy = _Item.ModifiedBy;
-                existCourse.ModifiedDate = _Item.ModifiedDate;
-                _context.Grades.Update(existCourse);
-                await _context.SaveChangesAsync();
-                trans.Commit();
-                return Ok(_Item.GuidId);
+                var enr = await _context.Enrollments.Where(x => x.SectionGuid.CourseGuid.CourseNo == _Item.CourseNo
+                    &&
+                    x.SectionGuid.SectionNo == _Item.SectionNo
+                    &&
+                    x.StudentGuid.StudentId == _Item.StudentId).FirstOrDefaultAsync();
+                        if (enr != null)
+                        {
+                            existCourse.GuidId = _Item.GuidId;
+                            existCourse.EnrollmentGuidId = enr.GuidId;
+                            existCourse.Grade1 = _Item.Grade;
+                            existCourse.CreatedBy = _Item.CreatedBy;
+                            existCourse.CreatedDate = _Item.CreatedDate;
+                            existCourse.ModifiedBy = _Item.ModifiedBy;
+                            existCourse.ModifiedDate = _Item.ModifiedDate;
+                            _context.Grades.Update(existCourse);
+                            await _context.SaveChangesAsync();
+                            trans.Commit();
+                            return Ok(_Item.GuidId);
+                        }
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Grade Post");
             }
             catch (Exception e)
             {
@@ -141,9 +159,11 @@ namespace SWARM.Server.Controllers.Grd
                     GuidId = sp.GuidId,
                     EnrollmentGuidId = sp.EnrollmentGuidId,
                     Grade = sp.Grade1,
-                    FirstName = sp.Guid.StudentGuid.FirstName,
-                    LastName = sp.Guid.StudentGuid.LastName,
-                    CourseNo = sp.Guid.SectionGuid.CourseGuid.CourseNo,
+                    FirstName = sp.EnrollmentGuid.StudentGuid.FirstName,
+                    LastName = sp.EnrollmentGuid.StudentGuid.LastName,
+                    CourseNo = sp.EnrollmentGuid.SectionGuid.CourseGuid.CourseNo,
+                    SectionNo = sp.EnrollmentGuid.SectionGuid.SectionNo,
+                    StudentId = sp.EnrollmentGuid.StudentGuid.StudentId,
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,

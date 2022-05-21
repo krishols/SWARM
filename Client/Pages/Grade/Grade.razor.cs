@@ -100,7 +100,7 @@ namespace SWARM.Client.Pages.Grade
         private void DeleteGrade(GridCommandEventArgs e)
         {
             GradeDTO _GradeDTO = e.Item as GradeDTO;
-            var result = Http.DeleteAsync($"api/Course/Delete/{_GradeDTO.GuidId}");
+            var result = Http.DeleteAsync($"api/Grade/Delete/{_GradeDTO.GuidId}");
 
 
         }

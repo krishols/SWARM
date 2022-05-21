@@ -20,7 +20,7 @@ namespace SWARM.EF.Models
         [StringLength(36)]
         public string EnrollmentGuidId { get; set; }
         [Column("GRADE")]
-        public byte Grade1 { get; set; }
+        public int Grade1 { get; set; }
         [Required]
         [Column("CREATED_BY")]
         [StringLength(30)]
