@@ -47,7 +47,7 @@ namespace SWARM.Client.Pages.Grade
         private async Task LoadLookupData()
         {
             //School?
-            lstcourse = await Http.GetFromJsonAsync<List<Grade>>("api/Enrollment/GetGrades", options);
+            lstcourse = await Http.GetFromJsonAsync<List<Grade>>("api/Grade/GetGrades", options);
         }
 
         public async Task ReadItems(GridReadEventArgs args)

@@ -41,10 +41,11 @@
     </GridExport>
 
     <GridColumns>
-        <GridColumn Field="@(nameof(CourseDTO.GuidId))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="false" Visible="false" />
-        <GridColumn Field="@(nameof(CourseDTO.CourseNo))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="true" Visible="true" />
-        <GridColumn Field="@(nameof(CourseDTO.CourseName))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
-        <GridColumn Field="@(nameof(CourseDTO.SchoolName))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(GradeDTO.GuidId))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="false" Visible="false" />
+        <GridColumn Field="@(nameof(GradeDTO.CourseNo))" VisibleInColumnChooser="false" ShowColumnMenu="false" Locked="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(GradeDTO.FirstName))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(GradeDTO.LastName))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
+        <GridColumn Field="@(nameof(GradeDTO.Grade))" VisibleInColumnChooser="true" ShowColumnMenu="true" Editable="true" Visible="true" />
         <GridCommandColumn Width="250px">
             <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
             <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
