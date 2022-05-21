@@ -77,7 +77,7 @@ namespace SWARM.Server.Controllers.Grd
 
                 existCourse = new Grade();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.EnrollmentGuid = _Item.EnrollmentGuid;
+                existCourse.EnrollmentGuid = _Item.EnrollmentGuidId;
                 existCourse.Grade1 = _Item.Grade;
                 existCourse.CreatedBy = _Item.CreatedBy;
                 existCourse.CreatedDate = _Item.CreatedDate;
@@ -110,7 +110,7 @@ namespace SWARM.Server.Controllers.Grd
                 }
                 existCourse = new Grade();
                 existCourse.GuidId = _Item.GuidId;
-                existCourse.EnrollmentGuid = _Item.EnrollmentGuid;
+                existCourse.EnrollmentGuid = _Item.EnrollmentGuidId;
                 existCourse.Grade1 = _Item.Grade;
                 existCourse.CreatedBy = _Item.CreatedBy;
                 existCourse.CreatedDate = _Item.CreatedDate;
@@ -139,8 +139,9 @@ namespace SWARM.Server.Controllers.Grd
                 .Select(sp => new GradeDTO
                 {
                     GuidId = sp.GuidId,
-                    EnrollmentGuid = sp.EnrollmentGuid,
+                    EnrollmentGuidId = sp.EnrollmentGuid,
                     Grade = sp.Grade1,
+                    FirstName = sp.EnrollmentGuid.
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,

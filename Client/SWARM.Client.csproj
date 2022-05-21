@@ -36,6 +36,7 @@
     <Folder Include="Pages\Student\" />
     <Folder Include="Pages\Section\" />
     <Folder Include="Pages\Enrollment\" />
+    <Folder Include="Pages\Grade\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,5 +44,6 @@
     <None Remove="Pages\Student\" />
     <None Remove="Pages\Section\" />
     <None Remove="Pages\Enrollment\" />
+    <None Remove="Pages\Grade\" />
   </ItemGroup>
 </Project>
