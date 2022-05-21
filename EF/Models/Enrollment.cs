@@ -11,6 +11,11 @@ namespace SWARM.EF.Models
     [Table("ENROLLMENT")]
     public partial class Enrollment
     {
+        public Enrollment()
+        {
+            Grades = new HashSet<Grade>();
+        }
+
         [Key]
         [Column("GUID_ID")]
         [StringLength(36)]
@@ -42,7 +47,7 @@ namespace SWARM.EF.Models
         [ForeignKey(nameof(StudentGuidId))]
         [InverseProperty(nameof(Student.Enrollments))]
         public virtual Student StudentGuid { get; set; }
-        [InverseProperty("Guid")]
-        public virtual Grade Grade { get; set; }
+        [InverseProperty(nameof(Grade.EnrollmentGuid))]
+        public virtual ICollection<Grade> Grades { get; set; }
     }
 }

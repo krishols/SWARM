@@ -17,7 +17,7 @@ namespace SWARM.EF.Models
         public string GuidId { get; set; }
         [Required]
         [Column("ENROLLMENT_GUID_ID")]
-        [StringLength(20)]
+        [StringLength(36)]
         public string EnrollmentGuidId { get; set; }
         [Column("GRADE")]
         public byte Grade1 { get; set; }
@@ -34,8 +34,8 @@ namespace SWARM.EF.Models
         [Column("MODIFIED_DATE", TypeName = "DATE")]
         public DateTime ModifiedDate { get; set; }
 
-        [ForeignKey(nameof(GuidId))]
-        [InverseProperty(nameof(Enrollment.Grade))]
-        public virtual Enrollment Guid { get; set; }
+        [ForeignKey(nameof(EnrollmentGuidId))]
+        [InverseProperty(nameof(Enrollment.Grades))]
+        public virtual Enrollment EnrollmentGuid { get; set; }
     }
 }

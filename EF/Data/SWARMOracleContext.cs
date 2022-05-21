@@ -190,9 +190,9 @@ namespace SWARM.EF.Data
 
                 entity.Property(e => e.ModifiedDate).ValueGeneratedOnAdd();
 
-                entity.HasOne(d => d.Guid)
-                    .WithOne(p => p.Grade)
-                    .HasForeignKey<Grade>(d => d.GuidId)
+                entity.HasOne(d => d.EnrollmentGuid)
+                    .WithMany(p => p.Grades)
+                    .HasForeignKey(d => d.EnrollmentGuidId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("GRADES_FK1");
             });
