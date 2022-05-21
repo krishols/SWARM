@@ -180,7 +180,7 @@ namespace SWARM.EF.Data
 
                 entity.Property(e => e.CreatedDate).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.EnrollmentGuid).IsUnicode(false);
+                entity.Property(e => e.EnrollmentGuidId).IsUnicode(false);
 
                 entity.Property(e => e.Grade1).HasPrecision(3);
 

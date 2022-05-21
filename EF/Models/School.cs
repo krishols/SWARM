@@ -22,7 +22,7 @@ namespace SWARM.EF.Models
         public string SchoolName { get; set; }
         [Key]
         [Column("GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string GuidId { get; set; }
         [Required]
         [Column("CREATED_BY")]

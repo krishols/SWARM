@@ -139,13 +139,13 @@ namespace SWARM.Server.Controllers.Grd
                 .Select(sp => new GradeDTO
                 {
                     GuidId = sp.GuidId,
-                    EnrollmentGuidId = sp.EnrollmentGuid,
+                    EnrollmentGuidId = sp.EnrollmentGuidId,
                     Grade = sp.Grade1,
                     CreatedBy = sp.CreatedBy,
                     CreatedDate = sp.CreatedDate,
                     ModifiedBy = sp.ModifiedBy,
                     ModifiedDate = sp.ModifiedDate
-                });
+                }); 
 
 
             // use the Telerik DataSource Extensions to perform the query on the data

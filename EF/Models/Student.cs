@@ -19,7 +19,7 @@ namespace SWARM.EF.Models
 
         [Key]
         [Column("GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string GuidId { get; set; }
         [Column("STUDENT_ID")]
         public int StudentId { get; set; }

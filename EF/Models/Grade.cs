@@ -13,12 +13,12 @@ namespace SWARM.EF.Models
     {
         [Key]
         [Column("GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string GuidId { get; set; }
         [Required]
-        [Column("ENROLLMENT_GUID")]
+        [Column("ENROLLMENT_GUID_ID")]
         [StringLength(20)]
-        public string EnrollmentGuid { get; set; }
+        public string EnrollmentGuidId { get; set; }
         [Column("GRADE")]
         public byte Grade1 { get; set; }
         [Required]

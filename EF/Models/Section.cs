@@ -20,11 +20,11 @@ namespace SWARM.EF.Models
         public int SectionNo { get; set; }
         [Key]
         [Column("GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string GuidId { get; set; }
         [Required]
         [Column("COURSE_GUID_ID")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string CourseGuidId { get; set; }
         [Required]
         [Column("CREATED_BY")]
